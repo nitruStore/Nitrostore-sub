@@ -1,3 +1,13 @@
 {
-  "status": "not_generated_yet"
+  "updated_at_unix": 1788379930,
+  "published": 200,
+  "limit": 200,
+  "source2": 464,
+  "ignored_source2": 15,
+  "parsed": 464,
+  "parsed_unique": 464,
+  "duplicates": 0,
+  "health_failed": 13,
+  "healthy": 451,
+  "duration_seconds": 86.067
 }
