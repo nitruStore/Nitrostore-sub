@@ -1,0 +1,68 @@
+name: Update Subscription
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 */12 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: subscription-update
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run subscription updater
+        env:
+          SOURCE_1: ${{ secrets.SOURCE_1 }}
+          SOURCE_2: ${{ secrets.SOURCE_2 }}
+
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+
+          MAX_CONFIGS: "200"
+
+          HEALTH_CHECK_ENABLED: "true"
+          HEALTH_TIMEOUT: "8"
+          HEALTH_TARGET: "https://www.gstatic.com/generate_204"
+
+        run: |
+          python -m src.main
+
+      - name: Publish updated subscription
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add output/subscription output/metadata.json
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+
+          git commit -m "chore: update subscription"
+          git push
