@@ -1,13 +1,13 @@
 {
-  "updated_at_unix": 1788740003,
+  "updated_at_unix": 1788783102,
   "published": 200,
   "limit": 200,
-  "source2": 420,
-  "ignored_source2": 37,
-  "parsed": 420,
-  "parsed_unique": 420,
+  "source2": 286,
+  "ignored_source2": 19,
+  "parsed": 286,
+  "parsed_unique": 286,
   "duplicates": 0,
-  "health_failed": 2,
-  "healthy": 418,
-  "duration_seconds": 85.758
+  "health_failed": 10,
+  "healthy": 276,
+  "duration_seconds": 123.217
 }
